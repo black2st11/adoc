@@ -1,11 +1,22 @@
 # 비바이노베이션 과제
 
+## django 를 선택하게 된 이유
+개인적인 사유로 인하여 시간의 촉박함과 가장 자주 사용했던 부분이기에 사용했습니다. \
+그렇다고 django 에 모든 부분을 사용하는 것이 아닌 django 에서는 잘 다루지 않는 service layer 형태로 분리해서 진행하였습니다.
+
+## 코드 스타일
+최소 아래의 코드 규칙을 적용했습니다.
+- black
+- isort
+
 ## 실행방법
 ```shell
 docker-compose up -d
 ```
 
 ## DB Migration 방법
+django 의 기본 migration 을 적용합니다.
+mongodb 의 경우 따로 migration 없이 schema validation 을 적용했습니다.
 ```
 python manage.py migrate
 ```
