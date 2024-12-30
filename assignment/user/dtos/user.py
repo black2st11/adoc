@@ -6,6 +6,7 @@ class InSignupDTO(BaseModel):
     password: str
     re_password: str
 
+
 class InLoginDTO(BaseModel):
     email: str
     password: str

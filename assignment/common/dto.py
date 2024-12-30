@@ -2,14 +2,14 @@ from datetime import datetime
 from typing import Any
 
 import orjson
-from pydantic import ConfigDict, BaseModel as PydanticBaseModel
+from pydantic import BaseModel as PydanticBaseModel
+from pydantic import ConfigDict
+
 
 class BaseModel(PydanticBaseModel):
     model_config = ConfigDict(
         arbitrary_types_allowed=True,
-        json_encoders={
-            datetime: lambda dt: dt.isoformat()
-        }
+        json_encoders={datetime: lambda dt: dt.isoformat()},
     )
 
 

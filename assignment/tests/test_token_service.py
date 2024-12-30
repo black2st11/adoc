@@ -1,10 +1,11 @@
-import pytest
-from freezegun import freeze_time
 from datetime import datetime, timedelta, timezone
 
-from assignment.exception import CustomException
+import pytest
+from freezegun import freeze_time
 from user.dtos.token import InGenerateTokenDto
 from user.services.token_service import TokenService
+
+from assignment.exception import CustomException
 
 
 class TestTokenService:
@@ -21,7 +22,11 @@ class TestTokenService:
     def test_success_generate_token_by_refresh_token(self, test_user):
         token_service = TokenService()
         ret = token_service.generate_token(InGenerateTokenDto(user=test_user))
-        result = token_service.generate_token(InGenerateTokenDto(access_token=ret.access_token, refresh_token=ret.refresh_token))
+        result = token_service.generate_token(
+            InGenerateTokenDto(
+                access_token=ret.access_token, refresh_token=ret.refresh_token
+            )
+        )
 
         assert result.access_token
         assert result.refresh_token
@@ -31,7 +36,7 @@ class TestTokenService:
     def test_fail_generate_token(self, test_user):
         with pytest.raises(CustomException) as e:
             TokenService().generate_token(InGenerateTokenDto())
-        assert e.value.message == '로그인 정보가 존재하지 않습니다.'
+        assert e.value.message == "로그인 정보가 존재하지 않습니다."
 
     @pytest.mark.django_db
     def test_success_verify_access_token(self, test_user):
@@ -49,7 +54,7 @@ class TestTokenService:
             frozen_datetime.move_to(test_datetime)
             with pytest.raises(CustomException) as e:
                 assert token_service.verify_access_token(result.access_token)
-            assert e.value.message == '로그인 정보가 만료되었습니다.'
+            assert e.value.message == "로그인 정보가 만료되었습니다."
 
     @pytest.mark.django_db
     def test_success_refresh_token(self, test_user):
@@ -80,4 +85,4 @@ class TestTokenService:
             frozen_datetime.move_to(test_datetime)
             with pytest.raises(CustomException) as e:
                 token_service.refresh_token(ret.access_token, ret.refresh_token)
-            assert e.value.message == '로그인 정보가 만료되었습니다.'
+            assert e.value.message == "로그인 정보가 만료되었습니다."
