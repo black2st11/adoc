@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: sh ./start.sh
+    volumes:
+      - ./assignment:/app
+    environment:
+      - DB_HOST=db
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - mongo
+  db:
+    image: mysql:8.0
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_HOST=127.0.0.1
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=assignment
+    ports:
+      - "3306:3306"
+
+  mongo:
+    image: mongo:latest
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "27017:27017"
+
+volumes:
+  mysql_data:
+  mongodb_data:
